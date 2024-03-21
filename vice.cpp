@@ -39,7 +39,7 @@ int main(){
 
     AllInit();
     U64 playBitBoard = 0ULL;
-
+ 
 
     //These work! Testing FEN parsing
     S_BOARD board[1];
@@ -58,7 +58,7 @@ int main(){
     ShowSqAtBySide(BLACK, board);
 
     */
-   
+
     /*
     //Checking checkBoard, it Works :)
     ParseFen(FEN4, board);
