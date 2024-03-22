@@ -71,6 +71,11 @@ struct S_UNDO{
     U64 posKey;                         //Position key
 };
 
+struct S_MOVE{
+    int move;                           //Stores all info for the move
+    int score;                          //Score of the moves
+};
+
 //The entire board
 struct S_BOARD {
     int pieces[BRD_SQ_NUM];             //120 int array for all the pieces and protective border squares
@@ -92,6 +97,38 @@ struct S_BOARD {
     S_UNDO history[MAXGAMEMOVES];       //History of the game
     int pList[13][10];                  //Piece list, Each type of piece and Amount of Pieces
 };
+
+//======================================
+//GAME MOVES
+//======================================
+/*
+
+0000 0000 0000 0000 0001 0001   --> 11 (hex, each number represents a block of 4 bits)
+0000 0000 0000 0000 1010 1111   --> AF
+
+Allows us to use bitshifting, andwise operations to tell us all this information
+0000 0000 0000 0000 0000 0111 1111   --> From sq                0x3F
+0000 0000 0000 0011 1111 1000 0000   --> To sq                  >> 7  0x3F
+0000 0000 0011 1100 0000 0000 0000   --> Piece captured         >> 14 0xF
+0000 0000 0100 0000 0000 0000 0000   --> En Passant capture?          0x40000
+0000 0000 1000 0000 0000 0000 0000   --> Pawn start?                  0x80000
+0000 1111 0000 0000 0000 0000 0000   --> Promoted piece?        >> 20 0xF
+0001 0000 0000 0000 0000 0000 0000   --> Castle move?                 0x1000000
+
+*/
+
+#define FROMSQ(m) ((m) & 0x3F)
+#define TOSQ(m) (((m) >> 7) & 0x3F)
+#define CAPTURED(m) (((m) >> 14) & 0xF)
+#define PROMOTED(m) (((m) >> 20) & 0xF)
+
+
+#define MFLAGEP 0x4000                   //Move flag En Passant
+#define MFLAGPS 0x8000                   //Move flag Pawn Start
+#define MFLAGCA 0x1000000                //Move flag Castle
+
+#define MFLAGCAP 0x7C000                 //Check to see if move was a capture
+#define MFLAGPROM 0xF00000               //Check to see if move was a promotion
 
 //======================================
 //MACROS
