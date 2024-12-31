@@ -71,6 +71,7 @@ struct S_UNDO{
     U64 posKey;                         //Position key
 };
 
+//Stores the moves available
 struct S_MOVE{
     int move;                           //Stores all info for the move
     int score;                          //Score of the moves
@@ -103,22 +104,23 @@ struct S_BOARD {
 //======================================
 /*
 
-0000 0000 0000 0000 0001 0001   --> 11 (hex, each number represents a block of 4 bits)
-0000 0000 0000 0000 1010 1111   --> AF
+0000 0000 0000 0000 0001 0001   --> 0x000011 (hex, each number represents a block of 4 bits)
+0000 0000 0000 0000 1010 1111   --> 0x0000AF
 
 Allows us to use bitshifting, andwise operations to tell us all this information
-0000 0000 0000 0000 0000 0111 1111   --> From sq                0x3F
-0000 0000 0000 0011 1111 1000 0000   --> To sq                  >> 7  0x3F
+0000 0000 0000 0000 0000 0111 1111   --> From sq                      0x7F
+0000 0000 0000 0011 1111 1000 0000   --> To sq                  >> 7  0x7F
 0000 0000 0011 1100 0000 0000 0000   --> Piece captured         >> 14 0xF
-0000 0000 0100 0000 0000 0000 0000   --> En Passant capture?          0x40000
-0000 0000 1000 0000 0000 0000 0000   --> Pawn start?                  0x80000
-0000 1111 0000 0000 0000 0000 0000   --> Promoted piece?        >> 20 0xF
-0001 0000 0000 0000 0000 0000 0000   --> Castle move?                 0x1000000
-
+0000 0000 0100 0000 0000 0000 0000   --> Is En Passant capture?       0x40000
+0000 0000 1000 0000 0000 0000 0000   --> Is Pawn start?               0x80000
+0000 1111 0000 0000 0000 0000 0000   --> Is Promoted piece?     >> 20 0xF
+0001 0000 0000 0000 0000 0000 0000   --> Is Castle move?              0x1000000
 */
 
-#define FROMSQ(m) ((m) & 0x3F)
-#define TOSQ(m) (((m) >> 7) & 0x3F)
+//Error: Changed from & 0x3F to 0x7F.
+
+#define FROMSQ(m) ((m) & 0x7F)
+#define TOSQ(m) (((m) >> 7) & 0x7F)
 #define CAPTURED(m) (((m) >> 14) & 0xF)
 #define PROMOTED(m) (((m) >> 20) & 0xF)
 
@@ -126,9 +128,8 @@ Allows us to use bitshifting, andwise operations to tell us all this information
 #define MFLAGEP 0x4000                   //Move flag En Passant
 #define MFLAGPS 0x8000                   //Move flag Pawn Start
 #define MFLAGCA 0x1000000                //Move flag Castle
-
-#define MFLAGCAP 0x7C000                 //Check to see if move was a capture
-#define MFLAGPROM 0xF00000               //Check to see if move was a promotion
+#define MFLAGCAP 0x7C000                 //Move flag Capture
+#define MFLAGPROM 0xF00000               //Move flag Promotion
 
 //======================================
 //MACROS

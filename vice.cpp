@@ -45,6 +45,18 @@ int main(){
     S_BOARD board[1];
 
 
+    ParseFen(FEN4, board);
+    PrintBoard(board);
+    ASSERT(CheckBoard(board));
+
+    int move = 0;
+    int from = 6; int to = 12;
+    int cap = wR; int prom = bR;
+
+    move = ((from ) | (to << 7) | (cap << 14) | (prom << 20));
+
+    printf("\ndec:%d hex:%h", move, move);
+
     //Testing SqAtBy
     //Looks good
     /*
