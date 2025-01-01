@@ -1,3 +1,4 @@
+SHELL := cmd.exe
 CC=g++
 CFLAGS=-Wall -g
 SOURCES=$(wildcard *.cpp)
@@ -14,3 +15,4 @@ $(TARGET): $(OBJECTS)
 
 clean:
 	del /Q *.o *.obj $(TARGET)
+
