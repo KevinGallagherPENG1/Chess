@@ -38,8 +38,25 @@ void ShowSqAtBySide(const int side, const S_BOARD *pos){
 int main(){
 
     AllInit();
+
+
+    int move = 0;
+    int from = A2; int to = H7;
+    int cap = wR; int prom = bQ;
+
+    move = ( (from) | (to << 7) | (cap << 14) | (prom << 20));
+
+    printf("from:%d to:%d cap:%d prom:%d\n", FROMSQ(move), TOSQ(move), CAPTURED(move), PROMOTED(move));
+    
+    printf("Algebraic from:%s\n", PrSq(from));
+    printf("Algebraic to:%s\n", PrSq(to));
+    printf("Algebraic move:%s\n", PrMove(move));
+
+
+
+
+    /*
     U64 playBitBoard = 0ULL;
- 
 
     //These work! Testing FEN parsing
     S_BOARD board[1];
@@ -49,13 +66,26 @@ int main(){
     PrintBoard(board);
     ASSERT(CheckBoard(board));
 
+
+
+
+    
+    //Seems alright.
     int move = 0;
     int from = 6; int to = 12;
     int cap = wR; int prom = bR;
 
     move = ((from ) | (to << 7) | (cap << 14) | (prom << 20));
 
-    printf("\ndec:%d hex:%h", move, move);
+    printf("\ndec:%d", move);
+    printf("\nhex:%X", move);
+
+    printf("\nFrom:%d to:%d cap:%d prom:%d\n", FROMSQ(move), TOSQ(move), CAPTURED(move), PROMOTED(move));
+
+    move |= MFLAGPS;
+
+    printf("is Pawn Start:%s", (move & MFLAGPS) ? "YES" : "NO");
+    */
 
     //Testing SqAtBy
     //Looks good
