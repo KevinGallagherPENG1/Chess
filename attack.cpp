@@ -1,3 +1,4 @@
+#include "stdio.h"
 #include "defs.h"
 
 //These correspond to the positions that each piece can move to (horizontal, vertical, diagonal, etc)
@@ -9,6 +10,11 @@ const int KiDir[8] = {-1, -10, 1, 10, -9, -11, 11, 9};
 //Takes in square, which side is attacking, and the board, returns if that specific square is being attacked by any piece
 int SqAttacked(const int sq, const int side, const S_BOARD *pos){
     int pce, index, t_sq, dir;
+
+    //Check to make sure these values are valid
+    ASSERT(SqOnBoard(sq));
+    ASSERT(SideValid(side));
+    ASSERT(CheckBoard(pos));
 
     //Pawns
     if(side == WHITE){

@@ -25,6 +25,7 @@ typedef unsigned long long U64;
 #define BRD_SQ_NUM 120
 
 #define MAXGAMEMOVES 2048
+#define MAXPOSITIONMOVES 256        //Maximum moves for a single position
 
 //Forsyth-Edwards Notation
 //rook, knight, bishop, etc... lowercase is black, uppercase is white
@@ -75,6 +76,12 @@ struct S_UNDO{
 struct S_MOVE{
     int move;                           //Stores all info for the move
     int score;                          //Score of the moves
+};
+
+//List of moves we store
+struct S_MOVELIST{
+    S_MOVE moves[MAXPOSITIONMOVES];
+    int count;
 };
 
 //The entire board
@@ -230,4 +237,15 @@ extern int SqAttacked(const int sq, const int side, const S_BOARD *pos);
 //io.cpp
 extern char *PrSq(const int sq);
 extern char *PrMove(const int move);
+extern void PrintMoveList(const S_MOVELIST *list);
+
+//validate.cpp
+extern int SqOnBoard(const int sq);
+extern int SideValid(const int side);
+extern int FileRankValid(const int fr);
+extern int PieceValidEmpty(const int pce);
+extern int PieceValid(const int pce);
+
+//movegen.cpp
+extern void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list);
 #endif
