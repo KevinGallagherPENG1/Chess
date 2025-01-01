@@ -177,22 +177,24 @@ inline int FR2SQ(int f, int r){
 //GLOBAL
 //======================================
 
-//For converting 64 bit board position to our 120 bit board position and vice versa
+//For converting 64 bit board position to our 120 bit board position
 extern int Sq120ToSq64[BRD_SQ_NUM]; 
+//For converting 120 bit board position to 64 bit board position
 extern int Sq64ToSq120[64];
 
-//Setting and clearing bits from 0 to 1
+//Setting bits to 1
 extern U64 SetMask[64];
+//Clear bits to 0
 extern U64 ClearMask[64];
 
 extern U64 PieceKeys[13][120];
 extern U64 SideKey;
 extern U64 CastleKeys[16];
 
-extern char PceChar[];
-extern char SideChar[];
-extern char RankChar[];
-extern char FileChar[];
+extern char PceChar[];                          //Holds a character for each piece (Uppercase is White, lowecase is Black)
+extern char SideChar[];                         //w for White, b for black, - for neither
+extern char RankChar[];                         //Holds ranks of board (1-8)
+extern char FileChar[];                         //Holds files of board (a-h)
 
 extern int PieceBig[13];
 extern int PieceMaj[13];
