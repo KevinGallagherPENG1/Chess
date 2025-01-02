@@ -123,7 +123,6 @@ void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list){
    int index = 0;
    int pceIndex = 0;
 
-   printf("\n\nSide:%d\n", side);
 
    if(side == WHITE){
         //Loop through each white pawn
@@ -280,7 +279,7 @@ void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list){
         for(pceNum = 0; pceNum < pos->pceNum[pce]; pceNum++){
             sq = pos->pList[pce][pceNum];
             ASSERT(SqOnBoard(sq));
-            printf("Piece:%c on %s\n", PceChar[pce], PrSq(sq));
+            //printf("Piece:%c on %s\n", PceChar[pce], PrSq(sq));
 
             //Loop through all directions a piece has
             for(index = 0; index < NumDir[pce]; index++){
