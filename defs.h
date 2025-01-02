@@ -84,7 +84,7 @@ struct S_MOVELIST{
     int count;
 };
 
-//The entire board
+/// @brief Contains all info for a chess board
 struct S_BOARD {
     int pieces[BRD_SQ_NUM];             //120 int array for all the pieces and protective border squares
     U64 pawns[3];                       //Will set a single bit to 1 in a 64 bit number to indicate where a pawn is, each group of 8 bits is a row, 
@@ -93,7 +93,7 @@ struct S_BOARD {
     int side;                           //Current side to move
     int enPas;                          //Holds if enPassant move is possible
     int fiftyMove;                      //For tracking draws
-    int ply;                            //How many moves we are in
+    int ply;                            //How many moves we are in (depth)
     int hisPly;                         //How many moves have been made
     int castlePerm;                     //Int to store if castling is possible
     U64 posKey;                         //Unique key generated for each position
