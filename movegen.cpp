@@ -34,6 +34,9 @@ const int NumDir[13] = {0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8};
 
 //No captures
 static void AddQuietMove(const S_BOARD *pos, int move, S_MOVELIST *list){
+    ASSERT(SqOnBoard(FROMSQ(move)));
+    ASSERT(SqOnBoard(TOSQ(move)));
+    
     list->moves[list->count].move = move;
     list->moves[list->count].score = 0;
     list->count++;
@@ -41,12 +44,19 @@ static void AddQuietMove(const S_BOARD *pos, int move, S_MOVELIST *list){
 
 //Caputures a piece
 static void AddCaptureMove(const S_BOARD *pos, int move, S_MOVELIST *list){
+    ASSERT(SqOnBoard(FROMSQ(move)));
+    ASSERT(SqOnBoard(TOSQ(move)));
+    ASSERT(PieceValid(CAPTURED(move)));
+
     list->moves[list->count].move = move;
     list->moves[list->count].score = 0;
     list->count++;
 }
 
 static void AddEnPassantMove(const S_BOARD *pos, int move, S_MOVELIST *list){
+    ASSERT(SqOnBoard(FROMSQ(move)));
+    ASSERT(SqOnBoard(TOSQ(move)));
+
     list->moves[list->count].move = move;
     list->moves[list->count].score = 0;
     list->count++;
@@ -133,11 +143,10 @@ void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list){
 
             //If the square ahead of the pawn is empty
             if(pos->pieces[sq + 10] == EMPTY){
-                AddWhitePawnMove(pos, sq, sq+10, list);
-
+                AddWhitePawnMove(pos, sq, (sq + 10), list);
                 //If is a pawn start, pawn can jump two squares
                 if(RanksBrd[sq] == RANK_2 && pos->pieces[sq + 20] == EMPTY){
-                    AddQuietMove(pos, MOVE(sq, (sq+20), EMPTY, EMPTY, MFLAGPS), list);
+                    AddQuietMove(pos, MOVE(sq, (sq + 20), EMPTY, EMPTY, MFLAGPS), list);
                 }
             }
 
@@ -151,13 +160,14 @@ void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list){
             }
 
             //En passant moves
-            if(sq + 9 == pos->enPas){
-                AddCaptureMove(pos, MOVE(sq, sq + 9, EMPTY, EMPTY, MFLAGEP), list);
+            if(pos->enPas != NO_SQ){
+                if(sq + 9 == pos->enPas){
+                    AddEnPassantMove(pos, MOVE(sq, sq + 9, EMPTY, EMPTY, MFLAGEP), list);
+                }
+                if(sq + 11 == pos->enPas){
+                    AddEnPassantMove(pos, MOVE(sq, sq + 11, EMPTY, EMPTY, MFLAGEP), list);
+                }
             }
-
-            if(sq + 11 == pos->enPas){
-                AddCaptureMove(pos, MOVE(sq, sq + 11, EMPTY, EMPTY, MFLAGEP), list);
-            }    
         }
 
         //Castling
@@ -206,12 +216,14 @@ void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list){
             }
 
             //En passant moves
-            if(sq - 9 == pos->enPas){
-                AddCaptureMove(pos, MOVE(sq, sq - 9, EMPTY, EMPTY, MFLAGEP), list);
-            }
+            if(pos->enPas != NO_SQ){
+                if(sq - 9 == pos->enPas){
+                    AddEnPassantMove(pos, MOVE(sq, sq - 9, EMPTY, EMPTY, MFLAGEP), list);
+                }
 
-            if(sq - 11 == pos->enPas){
-                AddCaptureMove(pos, MOVE(sq, sq - 11, EMPTY, EMPTY, MFLAGEP), list);
+                if(sq - 11 == pos->enPas){
+                    AddEnPassantMove(pos, MOVE(sq, sq - 11, EMPTY, EMPTY, MFLAGEP), list);
+                }
             }
         }
 
@@ -294,7 +306,7 @@ void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list){
                 //If occupied, check what color the piece on the t_sq is
                 if(pos->pieces[t_sq] != EMPTY){
                     //WHITE ^ 1 == BLACK        BLACK ^ 1 == WHITE
-                    if(PieceCol[pos->pieces[t_sq]] == side ^ 1){
+                    if(PieceCol[pos->pieces[t_sq]] == (side ^ 1)){
                         AddCaptureMove(pos, MOVE(sq, t_sq, pos->pieces[t_sq], EMPTY, 0), list);
                     }
                     continue;

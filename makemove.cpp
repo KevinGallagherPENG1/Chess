@@ -68,8 +68,8 @@ static void ClearPiece(const int sq, S_BOARD *pos){
 
         sq == sq3, so t_pceNum = 3
     */
-    for(index = 0; index < pos->pceNum[pce]; index++){
-        if(pos->pList[pce][index] = sq){
+    for(index = 0; index < pos->pceNum[pce]; ++index){
+        if(pos->pList[pce][index] == sq){
             t_pceNum = index;
             break;
         }
@@ -113,7 +113,7 @@ static void AddPiece(const int sq, S_BOARD *pos, const int pce){
         SETBIT(pos->pawns[BOTH], SQ64(sq));
     }
     pos->material[col] += PieceVal[pce];
-    pos->pList[pce][pos->pceNum[pce]++] = sq;           //@@
+    pos->pList[pce][pos->pceNum[pce]++] = sq;           //@@ ??
 }
 
 static void MovePiece(const int from, const int to, S_BOARD *pos){
@@ -171,9 +171,9 @@ int MakeMove(S_BOARD *pos, int move){
     //En passant move
     if(move & MFLAGEP){
         if(side == WHITE){
-            ClearPiece(to - 10, pos);
+            ClearPiece((to - 10), pos);
         } else {
-            ClearPiece(to + 10, pos);
+            ClearPiece((to + 10), pos);
         }
     } else if(move & MFLAGCA){
         switch(to){
@@ -281,13 +281,13 @@ void TakeMove(S_BOARD *pos){
     pos->side ^= 1;
     HASH_SIDE;
 
-    if(move & MFLAGEP){
+    if(MFLAGEP & move){
         if(pos->side == WHITE){
             AddPiece(to - 10, pos, bP);
         } else {
             AddPiece(to + 10, pos, wP);
         }
-    } else if(move & MFLAGCA){
+    } else if(MFLAGCA & move){
         switch(to){
             case C1 :    MovePiece(A1, D1, pos);     break;
             case C8 :    MovePiece(A8, D8, pos);     break;
