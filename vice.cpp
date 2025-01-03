@@ -35,15 +35,46 @@ void ShowSqAtBySide(const int side, const S_BOARD *pos){
 }
 */
 
+/*
+void printBin(int move){
+    int index = 0;
+    printf("As binary:\n");
+
+    for(index = 27; index >= 0; index--){
+        if( (1<<index) & move) printf("1");
+        else printf("0");
+        if(index != 28 && index % 4 == 0) printf(" ");
+    }
+    printf("\n");
+}
+*/
+
+
 int main(){
 
     AllInit();
     U64 playBitBoard = 0ULL;
  
-
-    //These work! Testing FEN parsing
     S_BOARD board[1];
 
+
+    /*
+    ParseFen(FEN4, board);
+    PrintBoard(board);
+    ASSERT(CheckBoard(board));
+
+    int move = 0; 
+    int from = 6;
+    int to = 12;
+    int cap = wR; int prom = bR;
+
+    move = ((from) | (to << 7) | (cap << 14) | (prom << 20));
+
+    printf("\ndec%d hex:%X\n", move, move);
+    printBin(move);
+
+    printf("from:%d to:%d cap:%d prom%d\n", FROMSQ(move), TOSQ(move), CAPTURED(move), PROMOTED(move));
+    */
 
     //Testing SqAtBy
     //Looks good
