@@ -4,7 +4,7 @@
 #define HASH_PCE(pce, sq) (pos->posKey ^= (PieceKeys[(pce)][(sq)]))
 #define HASH_CA (pos->posKey ^= (CastleKeys[(pos->castlePerm)]))
 #define HASH_SIDE (pos->posKey ^= (SideKey))
-#define HASH_EP (pos->posKey ^= (PieceKeys[(EMPTY)][(pos->enPas)]))
+#define HASH_EP (pos->posKey ^= (PieceKeys[EMPTY][(pos->enPas)]))
 
 
 //Castling perms are 1111 (15 in decimal)
@@ -22,21 +22,29 @@ const int CastlePerm[120] = {
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
     15,  7, 15, 15, 15,  3, 15, 15, 11, 15,
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15
 };
 
 //Clears a piece from the board
 static void ClearPiece(const int sq, S_BOARD *pos){
+    printf("\nPASSED sq:%d\n", sq);
     ASSERT(SqOnBoard(sq));
+    ASSERT(CheckBoard(pos));
+
+    printf("\n\nSQUARE:%s\n", PrSq(sq));
 
     //Get piece
     int pce = pos->pieces[sq];
+
+    printf("\nPCE:%d\n", pce);
 
     ASSERT(PieceValid(pce));
 
     int col = PieceCol[pce];        //Color of piece
     int index = 0;                  
     int t_pceNum = -1;              //Used for piece lists
+
+    ASSERT(SideValid(col));
 
     HASH_PCE(pce, sq);
 
@@ -76,6 +84,7 @@ static void ClearPiece(const int sq, S_BOARD *pos){
     }
 
     ASSERT(t_pceNum != -1);
+    ASSERT(t_pceNum >= 0 && t_pceNum < 10);
 
     pos->pceNum[pce]--;     //pos->pceNum[wP] == 4
     pos->pList[pce][t_pceNum] = pos->pList[pce][pos->pceNum[pce]];      //pos->pList[wP][3] = pos->pList[wP][4] = sq4
@@ -95,6 +104,8 @@ static void AddPiece(const int sq, S_BOARD *pos, const int pce){
     ASSERT(PieceValid(pce));
 
     int col = PieceCol[pce];
+
+    ASSERT(SideValid(col));
 
     HASH_PCE(pce, sq);
 
@@ -124,6 +135,9 @@ static void MovePiece(const int from, const int to, S_BOARD *pos){
     int pce = pos->pieces[from];
     int col = PieceCol[pce];
 
+    ASSERT(SideValid(col));
+    ASSERT(PieceValid(pce));
+
     #ifdef DEBUG
     int t_PieceNum = FALSE;
     #endif
@@ -142,7 +156,7 @@ static void MovePiece(const int from, const int to, S_BOARD *pos){
     }
 
     //Cycle through all of those pieces and move the specific piece
-    for(index = 0; index < pos->pceNum[pce]; index++){
+    for(index = 0; index < pos->pceNum[pce]; ++index){
         if(pos->pList[pce][index] == from){
             pos->pList[pce][index] = to;
             #ifdef DEBUG
@@ -165,23 +179,27 @@ int MakeMove(S_BOARD *pos, int move){
     ASSERT(SqOnBoard(to));
     ASSERT(SideValid(side));   
     ASSERT(PieceValid(pos->pieces[from]));
+    ASSERT(pos->hisPly >= 0 && pos->hisPly < MAXGAMEMOVES);
+	//ASSERT(pos->ply >= 0 && pos->ply < MAXDEPTH);
 
     pos->history[pos->hisPly].posKey = pos->posKey;
 
     //En passant move
     if(move & MFLAGEP){
         if(side == WHITE){
+            printf("\n1\n");
             ClearPiece((to - 10), pos);
         } else {
+            printf("\n2\n");
             ClearPiece((to + 10), pos);
         }
     } else if(move & MFLAGCA){
         switch(to){
-            case C1 :    MovePiece(A1, D1, pos);     break;
-            case C8 :    MovePiece(A8, D8, pos);     break;
-            case G1 :    MovePiece(H1, F1, pos);     break;
-            case G8 :    MovePiece(H8, F8, pos);     break;
-            default :    ASSERT(FALSE);              break;
+            case C1:    MovePiece(A1, D1, pos);     break;
+            case C8:    MovePiece(A8, D8, pos);     break;
+            case G1:    MovePiece(H1, F1, pos);     break;
+            case G8:    MovePiece(H8, F8, pos);     break;
+            default:    ASSERT(FALSE);              break;
         }
     }
 
@@ -199,9 +217,12 @@ int MakeMove(S_BOARD *pos, int move){
 
     HASH_CA;                                //Hash in castle perms
 
+
+
     int captured = CAPTURED(move);
     pos->fiftyMove++;
 
+    //@@ERRORS???
     if(captured != EMPTY){
         ASSERT(PieceValid(captured));
         ClearPiece(to, pos);
@@ -211,6 +232,8 @@ int MakeMove(S_BOARD *pos, int move){
     pos->hisPly++;
     pos->ply++;
 
+    ASSERT(pos->hisPly >= 0 && pos->hisPly < MAXGAMEMOVES);
+	//ASSERT(pos->ply >= 0 && pos->ply < MAXDEPTH);
 
     if(PiecePawn[pos->pieces[from]]){
         pos->fiftyMove = 0;
@@ -232,6 +255,7 @@ int MakeMove(S_BOARD *pos, int move){
 
     if(prPce != EMPTY){
         ASSERT(PieceValid(prPce) && !PiecePawn[prPce]);
+        printf("\n4\n");
         ClearPiece(to, pos);
         AddPiece(to, pos, prPce);
     }
@@ -261,6 +285,9 @@ void TakeMove(S_BOARD *pos){
     pos->hisPly--;
     pos->ply--;
 
+    ASSERT(pos->hisPly >= 0 && pos->hisPly < MAXGAMEMOVES);
+	//ASSERT(pos->ply >= 0 && pos->ply < MAXDEPTH);
+
     int move = pos->history[pos->hisPly].move;
     int from = FROMSQ(move);
     int to = TOSQ(move);
@@ -289,11 +316,11 @@ void TakeMove(S_BOARD *pos){
         }
     } else if(MFLAGCA & move){
         switch(to){
-            case C1 :    MovePiece(A1, D1, pos);     break;
-            case C8 :    MovePiece(A8, D8, pos);     break;
-            case G1 :    MovePiece(H1, F1, pos);     break;
-            case G8 :    MovePiece(H8, F8, pos);     break;
-            default :    ASSERT(FALSE);              break;
+            case C1:    MovePiece(D1, A1, pos);     break;
+            case C8:    MovePiece(D8, A8, pos);     break;
+            case G1:    MovePiece(F1, H1, pos);     break;
+            case G8:    MovePiece(F8, H8, pos);     break;
+            default:    ASSERT(FALSE);              break;
         }
     }
 
@@ -311,6 +338,7 @@ void TakeMove(S_BOARD *pos){
 
     if(PROMOTED(move) != EMPTY){
         ASSERT(PieceValid(PROMOTED(move)) && !PiecePawn[PROMOTED(move)]);
+        printf("\n5\n");
         ClearPiece(from, pos);
         AddPiece(from, pos, (PieceCol[PROMOTED(move)] == WHITE ? wP : bP));
     }

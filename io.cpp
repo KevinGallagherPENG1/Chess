@@ -16,31 +16,32 @@ char *PrSq(const int sq){
     return SqStr;
 }
 
-char *PrMove(const int move){
-    static char MvStr[6];
+char *PrMove(const int move) {
 
-    int ff = FilesBrd[FROMSQ(move)];    //File from
-    int rf = RanksBrd[FROMSQ(move)];    //Rank from
-    int ft = FilesBrd[TOSQ(move)];      //File to
-    int rt = RanksBrd[TOSQ(move)];      //Rank to
+	static char MvStr[6];
 
-    int promoted = PROMOTED(move);
+	int ff = FilesBrd[FROMSQ(move)];
+	int rf = RanksBrd[FROMSQ(move)];
+	int ft = FilesBrd[TOSQ(move)];
+	int rt = RanksBrd[TOSQ(move)];
 
-    if(promoted){
-        char pchar = 'q';                               //Assume Promoted piece is queen
-        if(IsKn(promoted)){
-            pchar = 'n';
-        } else if(IsRQ(promoted) && !IsBQ(promoted)){   //If is rook or queen but not bishop, then its a rook
-            pchar = 'r';
-        } else if(!IsRQ(promoted) && IsBQ(promoted)){   //If is bishop or queen but not rook, then its a bishop
-            pchar = 'b';
-        }
-        sprintf(MvStr, "%c%c%c%c%c", ('a' + ff), ('1' + rf), ('a' + ft), ('1' + rt), pchar);
-        } else{
-            sprintf(MvStr, "%c%c%c%c", ('a' + ff), ('1' + rf), ('a' + ft), ('1' + rt));
-        }
+	int promoted = PROMOTED(move);
 
-    return MvStr;
+	if(promoted) {
+		char pchar = 'q';
+		if(IsKn(promoted)) {
+			pchar = 'n';
+		} else if(IsRQ(promoted) && !IsBQ(promoted))  {
+			pchar = 'r';
+		} else if(!IsRQ(promoted) && IsBQ(promoted))  {
+			pchar = 'b';
+		}
+		sprintf(MvStr, "%c%c%c%c%c", ('a'+ff), ('1'+rf), ('a'+ft), ('1'+rt), pchar);
+	} else {
+		sprintf(MvStr, "%c%c%c%c", ('a'+ff), ('1'+rf), ('a'+ft), ('1'+rt));
+	}
+
+	return MvStr;
 }
 
 // Prints each move from a movelist 

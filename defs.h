@@ -125,9 +125,9 @@ Allows us to use bitshifting, andwise operations to tell us all this information
 */
 
 #define FROMSQ(m) ((m) & 0x7F)
-#define TOSQ(m) (((m) >> 7) & 0x7F)
-#define CAPTURED(m) (((m) >> 14) & 0xF)
-#define PROMOTED(m) (((m) >> 20) & 0xF)
+#define TOSQ(m) (((m)>>7) & 0x7F)
+#define CAPTURED(m) (((m)>>14) & 0xF)
+#define PROMOTED(m) (((m)>>20) & 0xF)
 
 
 #define MFLAGEP 0x4000                   //Move flag En Passant

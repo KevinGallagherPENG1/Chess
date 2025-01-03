@@ -48,26 +48,26 @@ int main(){
 
     AllInit();
 
-
     S_BOARD board[1];
     S_MOVELIST list[1];
 
     ParseFen(START_FEN, board);
     GenerateAllMoves(board, list);
 
-    int MoveNum = 0;
+    int MoveNum;
     int move = 0;
 
     PrintBoard(board);
     getchar();
 
-    for(MoveNum = 0; MoveNum < list->count; MoveNum++){
+    for(MoveNum = 0; MoveNum < list->count; ++MoveNum){
         move = list->moves[MoveNum].move;
-
         
+
         if(!MakeMove(board, move)){
             continue;
         }
+
         printf("\nMADE:%s\n", PrMove(move));
         PrintBoard(board);
 
@@ -77,7 +77,6 @@ int main(){
 
         getchar();
     }
-
 
 
     /*
