@@ -216,7 +216,7 @@ int ParseFen(char *fen, S_BOARD * pos){
             case '7':
             case '8':
                 piece = EMPTY;
-                count = *fen - '0';
+                count = *fen - (int)'0';
                 break;
 
             case '/':
@@ -232,7 +232,7 @@ int ParseFen(char *fen, S_BOARD * pos){
         }//End of switch
 
         for(i = 0; i < count; i++){
-            sq64 = rank * 8 + file;
+            sq64 = (rank * 8) + file;
             sq120 = SQ120(sq64);
 
             if(piece != EMPTY)
@@ -294,11 +294,14 @@ void ResetBoard(S_BOARD *pos){
         pos->pieces[SQ120(index)] = EMPTY;
 
     //Set amount of pieces to 0
-    for(index = 0; index < 3; index++){
+    for(index = 0; index < 2; index++){
         pos->bigPce[index] = 0;
         pos->majPce[index] = 0;
         pos->minPce[index] = 0;
         pos->material[index] = 0;
+    }
+
+    for(index = 0; index < 3; index++){
         pos->pawns[index] = 0ULL;
     }
 
