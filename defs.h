@@ -25,7 +25,11 @@ typedef unsigned long long U64;
 #define BRD_SQ_NUM 120
 
 #define MAXGAMEMOVES 2048
+<<<<<<< HEAD
 #define MAXPOSITIONMOVES 256        //Maximum moves for a single position
+=======
+#define MAXPOSITIONMOVES 256            //Maximum moves for a given position (more than enough)
+>>>>>>> nastyBugfix
 
 //Forsyth-Edwards Notation
 //rook, knight, bishop, etc... lowercase is black, uppercase is white
@@ -80,8 +84,13 @@ struct S_MOVE{
 
 //List of moves we store
 struct S_MOVELIST{
+<<<<<<< HEAD
     S_MOVE moves[MAXPOSITIONMOVES];
     int count;
+=======
+    S_MOVE moves[MAXPOSITIONMOVES];     //Stores moves
+    int count;                          //Amount of moves in array
+>>>>>>> nastyBugfix
 };
 
 //The entire board
@@ -115,7 +124,11 @@ struct S_BOARD {
 0000 0000 0000 0000 1010 1111   --> 0x0000AF
 
 Allows us to use bitshifting, andwise operations to tell us all this information
+<<<<<<< HEAD
 0000 0000 0000 0000 0000 0111 1111   --> From sq                      0x7F
+=======
+0000 0000 0000 0000 0000 0111 1111   --> From sq                0x7F
+>>>>>>> nastyBugfix
 0000 0000 0000 0011 1111 1000 0000   --> To sq                  >> 7  0x7F
 0000 0000 0011 1100 0000 0000 0000   --> Piece captured         >> 14 0xF
 0000 0000 0100 0000 0000 0000 0000   --> Is En Passant capture?       0x40000
@@ -130,11 +143,20 @@ Allows us to use bitshifting, andwise operations to tell us all this information
 #define PROMOTED(m) (((m) >> 20) & 0xF)
 
 
+<<<<<<< HEAD
 #define MFLAGEP 0x4000                   //Move flag En Passant
 #define MFLAGPS 0x8000                   //Move flag Pawn Start
 #define MFLAGCA 0x1000000                //Move flag Castle
 #define MFLAGCAP 0x7C000                 //Move flag Capture
 #define MFLAGPROM 0xF00000               //Move flag Promotion
+=======
+#define MFLAGEP 0x40000                 //Move flag en passant
+#define MFLAGPS 0x80000                 //Move flag pawn start
+#define MFLAGCA 0x1000000               //Move flag Castle
+
+#define MFLAGCAP 0x7C000                //Check to see if move was a capture
+#define MFLAGPROM 0xF00000              //Check to see if move was a promotion
+>>>>>>> nastyBugfix
 
 //======================================
 //MACROS
@@ -201,6 +223,7 @@ extern int PieceMaj[13];
 extern int PieceMin[13];
 extern int PieceVal[13];
 extern int PieceCol[13];
+extern int PiecePawn[13];
 
 extern int FilesBrd[BRD_SQ_NUM];
 extern int RanksBrd[BRD_SQ_NUM];
@@ -238,8 +261,13 @@ extern int CheckBoard(const S_BOARD *pos);
 extern int SqAttacked(const int sq, const int side, const S_BOARD *pos);
 
 //io.cpp
+<<<<<<< HEAD
 extern char *PrSq(const int sq);
 extern char *PrMove(const int move);
+=======
+extern char *PrMove(const int move);
+extern char *PrSq(const int sq);
+>>>>>>> nastyBugfix
 extern void PrintMoveList(const S_MOVELIST *list);
 
 //validate.cpp
@@ -251,4 +279,14 @@ extern int PieceValid(const int pce);
 
 //movegen.cpp
 extern void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list);
+<<<<<<< HEAD
+=======
+
+//makemove.cpp
+extern int MakeMove(S_BOARD *pos, int move);
+extern void TakeMove(S_BOARD *pos);
+
+//perft.cpp
+
+>>>>>>> nastyBugfix
 #endif
