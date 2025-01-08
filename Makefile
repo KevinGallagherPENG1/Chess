@@ -15,8 +15,16 @@ $(TARGET): $(OBJECTS)
 
 clean:
 <<<<<<< HEAD
+<<<<<<< HEAD
 	del /Q *.o *.obj $(TARGET)
 
 =======
 	del /Q *.o *.obj $(TARGET)
+>>>>>>> nastyBugfix
+=======
+	del /Q *.o *.obj $(TARGET)
+=======
+	del /Q *.o *.obj $(TARGET)
+
+>>>>>>> master
 >>>>>>> nastyBugfix

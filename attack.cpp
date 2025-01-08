@@ -13,8 +13,14 @@ int SqAttacked(const int sq, const int side, const S_BOARD *pos){
     int pce, index, t_sq, dir;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     //Check to make sure these values are valid
 =======
+>>>>>>> nastyBugfix
+=======
+=======
+    //Check to make sure these values are valid
+>>>>>>> master
 >>>>>>> nastyBugfix
     ASSERT(SqOnBoard(sq));
     ASSERT(SideValid(side));
@@ -37,7 +43,7 @@ int SqAttacked(const int sq, const int side, const S_BOARD *pos){
         pce = pos->pieces[sq + KnDir[index]];
         //Find if that pce is a knight and if that piece color is equal to the side
         if(IsKn(pce) && PieceCol[pce] == side)
-            return true;
+            return TRUE;
     }
 
     //Rooks, queen

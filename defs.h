@@ -26,9 +26,16 @@ typedef unsigned long long U64;
 
 #define MAXGAMEMOVES 2048
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define MAXPOSITIONMOVES 256        //Maximum moves for a single position
 =======
 #define MAXPOSITIONMOVES 256            //Maximum moves for a given position (more than enough)
+>>>>>>> nastyBugfix
+=======
+#define MAXPOSITIONMOVES 256            //Maximum moves for a given position (more than enough)
+=======
+#define MAXPOSITIONMOVES 256        //Maximum moves for a single position
+>>>>>>> master
 >>>>>>> nastyBugfix
 
 //Forsyth-Edwards Notation
@@ -85,8 +92,13 @@ struct S_MOVE{
 //List of moves we store
 struct S_MOVELIST{
 <<<<<<< HEAD
+<<<<<<< HEAD
     S_MOVE moves[MAXPOSITIONMOVES];
     int count;
+=======
+    S_MOVE moves[MAXPOSITIONMOVES];     //Stores moves
+    int count;                          //Amount of moves in array
+>>>>>>> nastyBugfix
 =======
     S_MOVE moves[MAXPOSITIONMOVES];     //Stores moves
     int count;                          //Amount of moves in array
@@ -94,6 +106,13 @@ struct S_MOVELIST{
 };
 
 //The entire board
+=======
+    S_MOVE moves[MAXPOSITIONMOVES];
+    int count;
+};
+
+/// @brief Contains all info for a chess board
+>>>>>>> master
 struct S_BOARD {
     int pieces[BRD_SQ_NUM];             //120 int array for all the pieces and protective border squares
     U64 pawns[3];                       //Will set a single bit to 1 in a 64 bit number to indicate where a pawn is, each group of 8 bits is a row, 
@@ -102,7 +121,7 @@ struct S_BOARD {
     int side;                           //Current side to move
     int enPas;                          //Holds if enPassant move is possible
     int fiftyMove;                      //For tracking draws
-    int ply;                            //How many moves we are in
+    int ply;                            //How many moves we are in (depth)
     int hisPly;                         //How many moves have been made
     int castlePerm;                     //Int to store if castling is possible
     U64 posKey;                         //Unique key generated for each position
@@ -125,9 +144,16 @@ struct S_BOARD {
 
 Allows us to use bitshifting, andwise operations to tell us all this information
 <<<<<<< HEAD
+<<<<<<< HEAD
 0000 0000 0000 0000 0000 0111 1111   --> From sq                      0x7F
 =======
 0000 0000 0000 0000 0000 0111 1111   --> From sq                0x7F
+>>>>>>> nastyBugfix
+=======
+0000 0000 0000 0000 0000 0111 1111   --> From sq                0x7F
+=======
+0000 0000 0000 0000 0000 0111 1111   --> From sq                      0x7F
+>>>>>>> master
 >>>>>>> nastyBugfix
 0000 0000 0000 0011 1111 1000 0000   --> To sq                  >> 7  0x7F
 0000 0000 0011 1100 0000 0000 0000   --> Piece captured         >> 14 0xF
@@ -138,11 +164,13 @@ Allows us to use bitshifting, andwise operations to tell us all this information
 */
 
 #define FROMSQ(m) ((m) & 0x7F)
+<<<<<<< HEAD
 #define TOSQ(m) (((m) >> 7) & 0x7F)
 #define CAPTURED(m) (((m) >> 14) & 0xF)
 #define PROMOTED(m) (((m) >> 20) & 0xF)
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 #define MFLAGEP 0x4000                   //Move flag En Passant
 #define MFLAGPS 0x8000                   //Move flag Pawn Start
@@ -150,12 +178,29 @@ Allows us to use bitshifting, andwise operations to tell us all this information
 #define MFLAGCAP 0x7C000                 //Move flag Capture
 #define MFLAGPROM 0xF00000               //Move flag Promotion
 =======
+=======
+>>>>>>> nastyBugfix
 #define MFLAGEP 0x40000                 //Move flag en passant
 #define MFLAGPS 0x80000                 //Move flag pawn start
 #define MFLAGCA 0x1000000               //Move flag Castle
 
 #define MFLAGCAP 0x7C000                //Check to see if move was a capture
 #define MFLAGPROM 0xF00000              //Check to see if move was a promotion
+<<<<<<< HEAD
+>>>>>>> nastyBugfix
+=======
+=======
+#define TOSQ(m) (((m)>>7) & 0x7F)
+#define CAPTURED(m) (((m)>>14) & 0xF)
+#define PROMOTED(m) (((m)>>20) & 0xF)
+
+
+#define MFLAGEP 0x4000                   //Move flag En Passant
+#define MFLAGPS 0x8000                   //Move flag Pawn Start
+#define MFLAGCA 0x1000000                //Move flag Castle
+#define MFLAGCAP 0x7C000                 //Move flag Capture
+#define MFLAGPROM 0xF00000               //Move flag Promotion
+>>>>>>> master
 >>>>>>> nastyBugfix
 
 //======================================
@@ -262,11 +307,20 @@ extern int SqAttacked(const int sq, const int side, const S_BOARD *pos);
 
 //io.cpp
 <<<<<<< HEAD
+<<<<<<< HEAD
 extern char *PrSq(const int sq);
 extern char *PrMove(const int move);
 =======
 extern char *PrMove(const int move);
 extern char *PrSq(const int sq);
+>>>>>>> nastyBugfix
+=======
+extern char *PrMove(const int move);
+extern char *PrSq(const int sq);
+=======
+extern char *PrSq(const int sq);
+extern char *PrMove(const int move);
+>>>>>>> master
 >>>>>>> nastyBugfix
 extern void PrintMoveList(const S_MOVELIST *list);
 
@@ -280,13 +334,23 @@ extern int PieceValid(const int pce);
 //movegen.cpp
 extern void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> nastyBugfix
 
 //makemove.cpp
 extern int MakeMove(S_BOARD *pos, int move);
+<<<<<<< HEAD
 extern void TakeMove(S_BOARD *pos);
 
 //perft.cpp
 
+<<<<<<< HEAD
+>>>>>>> nastyBugfix
+=======
+=======
+extern void TakeMove(S_BOARD *pos); 
+>>>>>>> master
 >>>>>>> nastyBugfix
 #endif

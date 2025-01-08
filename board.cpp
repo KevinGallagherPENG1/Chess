@@ -299,12 +299,25 @@ void ResetBoard(S_BOARD *pos){
         pos->majPce[index] = 0;
         pos->minPce[index] = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
         pos->material[index] = 0;       //Sets score of position to zero
 =======
+=======
+>>>>>>> nastyBugfix
         pos->material[index] = 0;
     }
 
+=======
+        pos->material[index] = 0;       //Sets score of position to zero
+        pos->pawns[index] = 0ULL;
+    }
+
+    //Set pawns to 0
+>>>>>>> master
     for(index = 0; index < 3; index++){
+<<<<<<< HEAD
+>>>>>>> nastyBugfix
+=======
 >>>>>>> nastyBugfix
         pos->pawns[index] = 0ULL;
     }
