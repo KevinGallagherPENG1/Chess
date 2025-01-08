@@ -298,9 +298,17 @@ void ResetBoard(S_BOARD *pos){
         pos->bigPce[index] = 0;
         pos->majPce[index] = 0;
         pos->minPce[index] = 0;
+<<<<<<< HEAD
         pos->material[index] = 0;
     }
 
+=======
+        pos->material[index] = 0;       //Sets score of position to zero
+        pos->pawns[index] = 0ULL;
+    }
+
+    //Set pawns to 0
+>>>>>>> master
     for(index = 0; index < 3; index++){
         pos->pawns[index] = 0ULL;
     }

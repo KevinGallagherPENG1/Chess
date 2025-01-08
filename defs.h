@@ -25,7 +25,11 @@ typedef unsigned long long U64;
 #define BRD_SQ_NUM 120
 
 #define MAXGAMEMOVES 2048
+<<<<<<< HEAD
 #define MAXPOSITIONMOVES 256            //Maximum moves for a given position (more than enough)
+=======
+#define MAXPOSITIONMOVES 256        //Maximum moves for a single position
+>>>>>>> master
 
 //Forsyth-Edwards Notation
 //rook, knight, bishop, etc... lowercase is black, uppercase is white
@@ -72,6 +76,7 @@ struct S_UNDO{
     U64 posKey;                         //Position key
 };
 
+//Stores the moves available
 struct S_MOVE{
     int move;                           //Stores all info for the move
     int score;                          //Score of the moves
@@ -79,11 +84,19 @@ struct S_MOVE{
 
 //List of moves we store
 struct S_MOVELIST{
+<<<<<<< HEAD
     S_MOVE moves[MAXPOSITIONMOVES];     //Stores moves
     int count;                          //Amount of moves in array
 };
 
 //The entire board
+=======
+    S_MOVE moves[MAXPOSITIONMOVES];
+    int count;
+};
+
+/// @brief Contains all info for a chess board
+>>>>>>> master
 struct S_BOARD {
     int pieces[BRD_SQ_NUM];             //120 int array for all the pieces and protective border squares
     U64 pawns[3];                       //Will set a single bit to 1 in a 64 bit number to indicate where a pawn is, each group of 8 bits is a row, 
@@ -92,7 +105,7 @@ struct S_BOARD {
     int side;                           //Current side to move
     int enPas;                          //Holds if enPassant move is possible
     int fiftyMove;                      //For tracking draws
-    int ply;                            //How many moves we are in
+    int ply;                            //How many moves we are in (depth)
     int hisPly;                         //How many moves have been made
     int castlePerm;                     //Int to store if castling is possible
     U64 posKey;                         //Unique key generated for each position
@@ -110,21 +123,25 @@ struct S_BOARD {
 //======================================
 /*
 
-0000 0000 0000 0000 0001 0001   --> 11 (hex, each number represents a block of 4 bits)
-0000 0000 0000 0000 1010 1111   --> AF
+0000 0000 0000 0000 0001 0001   --> 0x000011 (hex, each number represents a block of 4 bits)
+0000 0000 0000 0000 1010 1111   --> 0x0000AF
 
 Allows us to use bitshifting, andwise operations to tell us all this information
+<<<<<<< HEAD
 0000 0000 0000 0000 0000 0111 1111   --> From sq                0x7F
+=======
+0000 0000 0000 0000 0000 0111 1111   --> From sq                      0x7F
+>>>>>>> master
 0000 0000 0000 0011 1111 1000 0000   --> To sq                  >> 7  0x7F
 0000 0000 0011 1100 0000 0000 0000   --> Piece captured         >> 14 0xF
-0000 0000 0100 0000 0000 0000 0000   --> En Passant capture?          0x40000
-0000 0000 1000 0000 0000 0000 0000   --> Pawn start?                  0x80000
-0000 1111 0000 0000 0000 0000 0000   --> Promoted piece?        >> 20 0xF
-0001 0000 0000 0000 0000 0000 0000   --> Castle move?                 0x1000000
-
+0000 0000 0100 0000 0000 0000 0000   --> Is En Passant capture?       0x40000
+0000 0000 1000 0000 0000 0000 0000   --> Is Pawn start?               0x80000
+0000 1111 0000 0000 0000 0000 0000   --> Is Promoted piece?     >> 20 0xF
+0001 0000 0000 0000 0000 0000 0000   --> Is Castle move?              0x1000000
 */
 
 #define FROMSQ(m) ((m) & 0x7F)
+<<<<<<< HEAD
 #define TOSQ(m) (((m) >> 7) & 0x7F)
 #define CAPTURED(m) (((m) >> 14) & 0xF)
 #define PROMOTED(m) (((m) >> 20) & 0xF)
@@ -136,6 +153,18 @@ Allows us to use bitshifting, andwise operations to tell us all this information
 
 #define MFLAGCAP 0x7C000                //Check to see if move was a capture
 #define MFLAGPROM 0xF00000              //Check to see if move was a promotion
+=======
+#define TOSQ(m) (((m)>>7) & 0x7F)
+#define CAPTURED(m) (((m)>>14) & 0xF)
+#define PROMOTED(m) (((m)>>20) & 0xF)
+
+
+#define MFLAGEP 0x4000                   //Move flag En Passant
+#define MFLAGPS 0x8000                   //Move flag Pawn Start
+#define MFLAGCA 0x1000000                //Move flag Castle
+#define MFLAGCAP 0x7C000                 //Move flag Capture
+#define MFLAGPROM 0xF00000               //Move flag Promotion
+>>>>>>> master
 
 //======================================
 //MACROS
@@ -178,22 +207,24 @@ inline int FR2SQ(int f, int r){
 //GLOBAL
 //======================================
 
-//For converting 64 bit board position to our 120 bit board position and vice versa
+//For converting 64 bit board position to our 120 bit board position
 extern int Sq120ToSq64[BRD_SQ_NUM]; 
+//For converting 120 bit board position to 64 bit board position
 extern int Sq64ToSq120[64];
 
-//Setting and clearing bits from 0 to 1
+//Setting bits to 1
 extern U64 SetMask[64];
+//Clear bits to 0
 extern U64 ClearMask[64];
 
 extern U64 PieceKeys[13][120];
 extern U64 SideKey;
 extern U64 CastleKeys[16];
 
-extern char PceChar[];
-extern char SideChar[];
-extern char RankChar[];
-extern char FileChar[];
+extern char PceChar[];                          //Holds a character for each piece (Uppercase is White, lowecase is Black)
+extern char SideChar[];                         //w for White, b for black, - for neither
+extern char RankChar[];                         //Holds ranks of board (1-8)
+extern char FileChar[];                         //Holds files of board (a-h)
 
 extern int PieceBig[13];
 extern int PieceMaj[13];
@@ -210,6 +241,7 @@ extern int PieceKnight[13];
 extern int PieceKing[13];
 extern int PieceRookQueen[13];
 extern int PieceBishopQueen[13];
+extern int PieceSlides[13];
 
 //======================================
 //FUNCTIONS
@@ -237,8 +269,13 @@ extern int CheckBoard(const S_BOARD *pos);
 extern int SqAttacked(const int sq, const int side, const S_BOARD *pos);
 
 //io.cpp
+<<<<<<< HEAD
 extern char *PrMove(const int move);
 extern char *PrSq(const int sq);
+=======
+extern char *PrSq(const int sq);
+extern char *PrMove(const int move);
+>>>>>>> master
 extern void PrintMoveList(const S_MOVELIST *list);
 
 //validate.cpp
@@ -253,8 +290,12 @@ extern void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list);
 
 //makemove.cpp
 extern int MakeMove(S_BOARD *pos, int move);
+<<<<<<< HEAD
 extern void TakeMove(S_BOARD *pos);
 
 //perft.cpp
 
+=======
+extern void TakeMove(S_BOARD *pos); 
+>>>>>>> master
 #endif

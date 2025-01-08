@@ -1,3 +1,4 @@
+#include "stdio.h"
 #include "defs.h"
 #include "stdio.h"
 
@@ -11,6 +12,10 @@ const int KiDir[8] = {-1, -10, 1, 10, -9, -11, 11, 9};
 int SqAttacked(const int sq, const int side, const S_BOARD *pos){
     int pce, index, t_sq, dir;
 
+<<<<<<< HEAD
+=======
+    //Check to make sure these values are valid
+>>>>>>> master
     ASSERT(SqOnBoard(sq));
     ASSERT(SideValid(side));
     ASSERT(CheckBoard(pos));
@@ -32,7 +37,7 @@ int SqAttacked(const int sq, const int side, const S_BOARD *pos){
         pce = pos->pieces[sq + KnDir[index]];
         //Find if that pce is a knight and if that piece color is equal to the side
         if(IsKn(pce) && PieceCol[pce] == side)
-            return true;
+            return TRUE;
     }
 
     //Rooks, queen
