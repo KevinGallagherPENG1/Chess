@@ -200,6 +200,7 @@ extern int PieceMaj[13];
 extern int PieceMin[13];
 extern int PieceVal[13];
 extern int PieceCol[13];
+extern int PiecePawn[13];
 
 extern int FilesBrd[BRD_SQ_NUM];
 extern int RanksBrd[BRD_SQ_NUM];
@@ -249,5 +250,8 @@ extern int PieceValid(const int pce);
 
 //movegen.cpp
 extern void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list);
+
+//makemove.cpp
+
 
 #endif
