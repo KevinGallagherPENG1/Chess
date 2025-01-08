@@ -221,7 +221,7 @@ int MakeMove(S_BOARD *pos, int move){
    ASSERT(CheckBoard(pos));
 
    if(SqAttacked(pos->KingSq[side], pos->side, pos)){
-    //TakeMove(pos);
+    TakeMove(pos);
     return FALSE;
    }
 

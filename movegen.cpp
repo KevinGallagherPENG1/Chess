@@ -230,7 +230,6 @@ void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list){
 
         for(pceNum = 0; pceNum < pos->pceNum[pce]; ++pceNum){
             sq = pos->pList[pce][pceNum];
-            printf("Piece:%c on %s\n", PceChar[pce], PrSq(sq));
 
             for(index = 0; index < NumDir[pce]; index++){
                 dir = PceDir[pce][index];
