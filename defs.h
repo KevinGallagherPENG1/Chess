@@ -25,7 +25,11 @@ typedef unsigned long long U64;
 #define BRD_SQ_NUM 120
 
 #define MAXGAMEMOVES 2048
+<<<<<<< HEAD
+#define MAXPOSITIONMOVES 256            //Maximum moves for a given position (more than enough)
+=======
 #define MAXPOSITIONMOVES 256        //Maximum moves for a single position
+>>>>>>> master
 
 //Forsyth-Edwards Notation
 //rook, knight, bishop, etc... lowercase is black, uppercase is white
@@ -80,11 +84,19 @@ struct S_MOVE{
 
 //List of moves we store
 struct S_MOVELIST{
+<<<<<<< HEAD
+    S_MOVE moves[MAXPOSITIONMOVES];     //Stores moves
+    int count;                          //Amount of moves in array
+};
+
+//The entire board
+=======
     S_MOVE moves[MAXPOSITIONMOVES];
     int count;
 };
 
 /// @brief Contains all info for a chess board
+>>>>>>> master
 struct S_BOARD {
     int pieces[BRD_SQ_NUM];             //120 int array for all the pieces and protective border squares
     U64 pawns[3];                       //Will set a single bit to 1 in a 64 bit number to indicate where a pawn is, each group of 8 bits is a row, 
@@ -115,7 +127,11 @@ struct S_BOARD {
 0000 0000 0000 0000 1010 1111   --> 0x0000AF
 
 Allows us to use bitshifting, andwise operations to tell us all this information
+<<<<<<< HEAD
+0000 0000 0000 0000 0000 0111 1111   --> From sq                0x7F
+=======
 0000 0000 0000 0000 0000 0111 1111   --> From sq                      0x7F
+>>>>>>> master
 0000 0000 0000 0011 1111 1000 0000   --> To sq                  >> 7  0x7F
 0000 0000 0011 1100 0000 0000 0000   --> Piece captured         >> 14 0xF
 0000 0000 0100 0000 0000 0000 0000   --> Is En Passant capture?       0x40000
@@ -125,6 +141,19 @@ Allows us to use bitshifting, andwise operations to tell us all this information
 */
 
 #define FROMSQ(m) ((m) & 0x7F)
+<<<<<<< HEAD
+#define TOSQ(m) (((m) >> 7) & 0x7F)
+#define CAPTURED(m) (((m) >> 14) & 0xF)
+#define PROMOTED(m) (((m) >> 20) & 0xF)
+
+
+#define MFLAGEP 0x40000                 //Move flag en passant
+#define MFLAGPS 0x80000                 //Move flag pawn start
+#define MFLAGCA 0x1000000               //Move flag Castle
+
+#define MFLAGCAP 0x7C000                //Check to see if move was a capture
+#define MFLAGPROM 0xF00000              //Check to see if move was a promotion
+=======
 #define TOSQ(m) (((m)>>7) & 0x7F)
 #define CAPTURED(m) (((m)>>14) & 0xF)
 #define PROMOTED(m) (((m)>>20) & 0xF)
@@ -135,6 +164,7 @@ Allows us to use bitshifting, andwise operations to tell us all this information
 #define MFLAGCA 0x1000000                //Move flag Castle
 #define MFLAGCAP 0x7C000                 //Move flag Capture
 #define MFLAGPROM 0xF00000               //Move flag Promotion
+>>>>>>> master
 
 //======================================
 //MACROS
@@ -239,8 +269,13 @@ extern int CheckBoard(const S_BOARD *pos);
 extern int SqAttacked(const int sq, const int side, const S_BOARD *pos);
 
 //io.cpp
+<<<<<<< HEAD
+extern char *PrMove(const int move);
+extern char *PrSq(const int sq);
+=======
 extern char *PrSq(const int sq);
 extern char *PrMove(const int move);
+>>>>>>> master
 extern void PrintMoveList(const S_MOVELIST *list);
 
 //validate.cpp
@@ -255,5 +290,12 @@ extern void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list);
 
 //makemove.cpp
 extern int MakeMove(S_BOARD *pos, int move);
+<<<<<<< HEAD
+extern void TakeMove(S_BOARD *pos);
+
+//perft.cpp
+
+=======
 extern void TakeMove(S_BOARD *pos); 
+>>>>>>> master
 #endif

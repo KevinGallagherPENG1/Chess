@@ -14,5 +14,9 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
+<<<<<<< HEAD
+	del /Q *.o *.obj $(TARGET)
+=======
 	del /Q *.o *.obj $(TARGET)
 
+>>>>>>> master
