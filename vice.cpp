@@ -68,11 +68,21 @@ int main(){
     ParseFen(START_FEN, board);
     GenerateAllMoves(board, list);
 
+    PerftTest(3, board);
+
+
+
+
+    /*
+    //THE HAUNTED CODE TEST!!!
+
     int MoveNum = 0;
     int move = 0;
 
     PrintBoard(board);
     getchar();
+
+
 
     for(MoveNum = 0; MoveNum <list->count; ++MoveNum){
         move = list->moves[MoveNum].move;
@@ -91,7 +101,7 @@ int main(){
         getchar();
     }
 
-
+*/  
 
     
     
